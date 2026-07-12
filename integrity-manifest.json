@@ -1,0 +1,31 @@
+{
+  "version": "1.0.31",
+  "branch": "main",
+  "generatedAt": "2026-07-12T15:29:02.712Z",
+  "files": {
+    "binder-runtime.js": "cc1f526533b4018c9ab632b2747e7a6ab58f937f",
+    "binder-send.ps1": "18217b71993cac4bfb4164a1a312c7d5d0803637",
+    "build/icons/1024x1024.png": "57d8b8d6f16d39033eba71446916e281f8a97197",
+    "build/icons/128x128.png": "f668340d3e4d2f73b686936a3206cfb0a9d43db9",
+    "build/icons/16x16.png": "02989af070c34fcc9c0f7c20933d8a5f5b4f9a1f",
+    "build/icons/24x24.png": "238bd0231cf43041de6b3f21649f201e3a986407",
+    "build/icons/256x256.png": "01a8826fa881f5afc321f5c0043234c784b119b0",
+    "build/icons/32x32.png": "3ec19a09b8695bf7cd7fa0480a38f58c065766bd",
+    "build/icons/48x48.png": "69a57ccb4aadb0172b2a03b0c20604fdb813012d",
+    "build/icons/512x512.png": "02bfd8695b997c985b8bc7e7863210fc886e45a3",
+    "build/icons/64x64.png": "b12241412d8a87696e6b5a48a2d9a71794cdaf68",
+    "build/icons/icon.icns": "7583ba6894157486f5156706fc84deddeef21797",
+    "build/icons/icon.ico": "802736ac33e38eafe9e308ae82d3a869c1645ccc",
+    "img/logo.svg": "4a6cc5186f5a2ebfef93dc7a00b4d43d36b11f6c",
+    "main.js": "25f56341977296aaeeebadcf8439734a85151c11",
+    "page/offline.html": "95d045267e0fc06e6ee617f1110bea3e31cfa769",
+    "page/rmrp-controls.css": "732efe741bd3dc48d17f855c4b0cecfd7f5d2249",
+    "page/splash.html": "69d17bea66deecd80500c54a757993a850ecd3b3",
+    "preload.js": "aca97e6e42ef5d701ec860f27c856167368e7f93",
+    "sounds/alert.wav": "118b673ef9813881dbd401f0b8bb2852629fa436",
+    "sounds/bell.wav": "e78840c86fc01ef8eba51cd0bdb8cbaddd1c1d6c",
+    "sounds/chime.wav": "b41c15942f29df5680477df7dfe0378d05aab239",
+    "sounds/classic.wav": "ecae98eb6761ff3c57faf31672069c1b3a41c7a7",
+    "sounds/digital.wav": "07e989ad28379d7af8981e74988ebe5150474bfd"
+  }
+}

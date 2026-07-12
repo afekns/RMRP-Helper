@@ -1,0 +1,12 @@
+node_modules/
+release/
+.env
+.env.local
+.env.*.local
+!.env.example
+*.log
+logs.txt
+driver-signed.zip
+package-lock.json
+.DS_Store
+Thumbs.db

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RMRP Helper — нет связи</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card: #1a1a1a;
+            --accent: #e63939;
+            --text: #eeeeee;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            user-select: none;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, #1f1f1f 0%, #0a0a0a 70%);
+            opacity: 0.85;
+            z-index: -1;
+        }
+        .offline-container {
+            background: var(--card);
+            padding: clamp(28px, 6vh, 55px) clamp(24px, 7vw, 65px);
+            border-radius: 20px;
+            width: min(92vw, 520px);
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid #333;
+            animation: fadeInScale 0.45s ease-out forwards;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.94) translateY(16px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .offline-icon {
+            width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px); margin: 0 auto clamp(12px, 2.5vh, 18px);
+            border-radius: 50%;
+            background: rgba(230, 57, 57, 0.12);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .offline-icon svg { width: 46%; height: 46%; fill: var(--accent); }
+        h1 { color: var(--accent); font-size: clamp(20px, 2.6vh, 26px); margin-bottom: 12px; }
+        p {
+            color: #aaaaaa;
+            margin-bottom: 12px;
+            font-size: clamp(13px, 1.5vh, 14.5px);
+            line-height: 1.55;
+        }
+        .note {
+            font-size: clamp(11px, 1.4vh, 13px);
+            color: #888;
+            background: #151515;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: clamp(10px, 1.8vh, 14px) clamp(12px, 2vw, 16px);
+            margin: clamp(12px, 2vh, 16px) 0 clamp(16px, 3vh, 22px);
+            text-align: left;
+            line-height: 1.5;
+        }
+        .note code {
+            color: #ccc;
+            font-size: clamp(10px, 1.2vh, 12px);
+            word-break: break-all;
+        }
+        .retry-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: clamp(12px, 2vh, 16px) clamp(20px, 4vw, 28px);
+            font-size: clamp(13px, 1.8vh, 15px);
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: filter .15s, transform .1s;
+        }
+        .retry-btn:hover { filter: brightness(1.08); }
+        .retry-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        </div>
+        <h1 id="title">Нет соединения</h1>
+        <p id="lead">Не удалось завершить проверку при запуске RMRP Helper.</p>
+        <div class="note" id="note"></div>
+        <button type="button" class="retry-btn" id="retryBtn">Повторить попытку</button>
+    </div>
+    <script>
+        (function () {
+            const params = new URLSearchParams(location.search || '');
+            const reason = params.get('reason') || 'internet';
+            const server = params.get('server') || '';
+
+            const map = {
+                internet: {
+                    title: 'Нет соединения',
+                    lead: 'Не удалось проверить соединение с интернетом во время запуска RMRP Helper.',
+                    note: 'Проверьте Wi‑Fi/Ethernet, антивирус, VPN и брандмауэр. Приложению нужен доступ к серверу RMRP Helper.',
+                },
+                server: {
+                    title: 'Сервер RMRP Helper недоступен',
+                    lead: 'Интернет есть, но API/страницы Helper не отвечают.',
+                    note: 'Сервер: <code>' + (server || '—') + '</code><br>Попробуйте позже или проверьте, что VPS/nginx запущены.',
+                },
+                github: {
+                    title: 'Нет связи с GitHub',
+                    lead: 'Нужна проверка целостности файлов из репозитория afekns/RMRP-Helper.',
+                    note: 'Откройте доступ к <code>api.github.com</code> и <code>raw.githubusercontent.com</code> (без блокировки антивирусом/DNS).',
+                },
+                integrity: {
+                    title: 'Не удалось обновить файлы',
+                    lead: 'Проверка с сервером не пройдена — часть файлов не совпадает с VPS и не была докачана.',
+                    note: 'Нажмите «Повторить». Убедитесь, что папка установки доступна для записи (не Program Files без прав администратора).',
+                },
+                appdata: {
+                    title: 'Папка установки недоступна',
+                    lead: 'Программа не может записывать файлы в выбранную папку.',
+                    note: 'Переустановите RMRP Helper в каталог, где есть права на запись (например D:\\Games\\RMRP Helper), или запустите от администратора.',
+                },
+                repo_empty: {
+                    title: 'Репозиторий обновлений пуст',
+                    lead: 'GitHub-репозиторий пока без эталонных файлов UI.',
+                    note: 'Администратору нужно выполнить publish клиента в afekns/RMRP-Helper.',
+                },
+                github_unreachable: {
+                    title: 'Нет связи с GitHub',
+                    lead: 'Нужна проверка целостности файлов из репозитория afekns/RMRP-Helper.',
+                    note: 'Откройте доступ к <code>api.github.com</code> и <code>raw.githubusercontent.com</code>.',
+                },
+            };
+
+            const cfg = map[reason] || map.internet;
+            document.getElementById('title').textContent = cfg.title;
+            document.getElementById('lead').textContent = cfg.lead;
+            document.getElementById('note').innerHTML = cfg.note;
+
+            document.getElementById('retryBtn').addEventListener('click', () => {
+                if (window.electron?.retryStartup) {
+                    window.electron.retryStartup();
+                } else if (window.electron?.onRetryStartup) {
+                    /* legacy */
+                } else {
+                    location.reload();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

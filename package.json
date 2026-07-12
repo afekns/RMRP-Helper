@@ -1,0 +1,104 @@
+{
+  "name": "rmrp-helper",
+  "version": "1.0.31",
+  "description": "RMRP Helper — клиент для RP-серверов",
+  "author": "RMRP Helper",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "node scripts/ensure-electron.js",
+    "start": "node scripts/launcher.mjs",
+    "start:direct": "node scripts/ensure-electron.js && electron .",
+    "launch": "node scripts/launcher.mjs",
+    "build:icons": "electron-icon-builder --input=./app-icon.png --output=./build --flatten",
+    "dist": "electron-builder --win",
+    "dist:installer": "electron-builder --win nsis",
+    "dist:portable": "electron-builder --win portable",
+    "dist:all": "electron-builder --win nsis portable"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3",
+    "electron-icon-builder": "^2.0.1"
+  },
+  "build": {
+    "appId": "com.rmrphelper.app",
+    "productName": "RMRP Helper",
+    "copyright": "Copyright © RMRP Helper",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "**/*",
+      "!release/**",
+      "!data/**",
+      "!files/**",
+      "!.env",
+      "!.env.*",
+      "!logs.txt",
+      "!scripts/**",
+      "!**/*.md",
+      "!builder-debug.yml"
+    ],
+    "asarUnpack": [
+      "sounds/**",
+      "page/**",
+      "img/**",
+      "main.js",
+      "preload.js",
+      "binder-runtime.js",
+      "binder-send.ps1",
+      "app-icon.png",
+      "tray-icon.png",
+      "build/icons/**"
+    ],
+    "extraResources": [
+      { "from": "build/icons/icon.ico", "to": "app.ico" },
+      { "from": "app-icon.png", "to": "app-icon.png" }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icons/icon.ico",
+      "executableName": "RMRP Helper",
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "publisherName": "RMRP Helper"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "RMRP Helper",
+      "installerIcon": "build/icons/icon.ico",
+      "uninstallerIcon": "build/icons/icon.ico",
+      "installerHeaderIcon": "build/icons/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "menuCategory": false,
+      "displayLanguageSelector": false,
+      "installerLanguages": ["ru_RU", "en_US"],
+      "language": "1049",
+      "artifactName": "RMRP-Helper-Setup-${version}.${ext}",
+      "include": "build/installer.nsh",
+      "warningsAsErrors": false
+    },
+    "portable": {
+      "artifactName": "RMRP-Helper-Portable-${version}.${ext}"
+    }
+  }
+}

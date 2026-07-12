@@ -1,0 +1,351 @@
+/* =============================================================================
+   RMRP Helper — единые стили нативных контролов Chromium (checkbox, select,
+   radio, number, scrollbar, color). Подключать на КАЖДОЙ HTML-странице.
+   Элементы внутри .switch-toggle — скрытые, рисуется кастомный тумблер.
+   ============================================================================= */
+
+:root {
+    --rmrp-accent: #e63939;
+    --rmrp-accent-soft: rgba(230, 57, 57, 0.22);
+    --rmrp-control-bg: #1c1c24;
+    --rmrp-control-border: #2a2a33;
+    --rmrp-control-text: #f2f2f5;
+    --rmrp-control-muted: #9a9aa5;
+    --rmrp-control-radius: 10px;
+    --rmrp-success: #2ec4b6;
+}
+
+/* --- Скроллбары (WebKit / Electron) --- */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #303038 #0f0f0f;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #0f0f0f;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #303038;
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--rmrp-accent);
+}
+
+*::-webkit-scrollbar-corner {
+    background: #0f0f0f;
+}
+
+/* --- Select / списки --- */
+select:not(.hidden):not([hidden]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--rmrp-control-bg);
+    border: 1px solid var(--rmrp-control-border);
+    border-radius: var(--rmrp-control-radius);
+    color: var(--rmrp-control-text);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    padding: 10px 36px 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%239a9aa5' d='M1.4 1.4 6 6l4.6-4.6L12 2.8 6 8.8 0 2.8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px 8px;
+}
+
+select:not(.hidden):not([hidden]):hover {
+    border-color: #3a3a46;
+}
+
+select:not(.hidden):not([hidden]):focus,
+select:not(.hidden):not([hidden]):focus-visible {
+    outline: none;
+    border-color: var(--rmrp-accent);
+    box-shadow: 0 0 0 3px var(--rmrp-accent-soft);
+}
+
+select:not(.hidden):not([hidden]):disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+select option,
+select optgroup {
+    background: #17171d;
+    color: #eee;
+}
+
+/* Select внутри обёрток без своей рамки (time.html, notein) */
+.sound-select-wrap select,
+.custom-select-wrap select {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    padding-right: 28px;
+}
+
+.toolbar-select {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 12 8'%3E%3Cpath fill='%239a9aa5' d='M1.4 1.4 6 6l4.6-4.6L12 2.8 6 8.8 0 2.8z'/%3E%3C/svg%3E");
+    padding-right: 22px;
+    background-position: right 2px center;
+}
+
+.sound-select-wrap select:focus,
+.custom-select-wrap select:focus,
+.toolbar-select:focus {
+    box-shadow: none;
+}
+
+/* --- Checkbox (не тумблер) --- */
+input[type="checkbox"]:not(.switch-toggle input) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin: 0;
+    border: 2px solid #3a3a46;
+    border-radius: 5px;
+    background: #14141a;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+input[type="checkbox"]:not(.switch-toggle input):hover {
+    border-color: #55556a;
+}
+
+input[type="checkbox"]:not(.switch-toggle input):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--rmrp-accent-soft);
+}
+
+input[type="checkbox"]:not(.switch-toggle input):checked {
+    border-color: var(--rmrp-accent);
+    background: var(--rmrp-accent);
+}
+
+input[type="checkbox"]:not(.switch-toggle input):checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+input[type="checkbox"]:not(.switch-toggle input):disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* --- Radio --- */
+input[type="radio"]:not(.switch-toggle input) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin: 0;
+    border: 2px solid #3a3a46;
+    border-radius: 50%;
+    background: #14141a;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+input[type="radio"]:not(.switch-toggle input):hover {
+    border-color: #55556a;
+}
+
+input[type="radio"]:not(.switch-toggle input):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--rmrp-accent-soft);
+}
+
+input[type="radio"]:not(.switch-toggle input):checked {
+    border-color: var(--rmrp-accent);
+}
+
+input[type="radio"]:not(.switch-toggle input):checked::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--rmrp-accent);
+}
+
+/* --- Number: без стрелок Chromium --- */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* --- Search: без крестика/лупы Chromium по умолчанию --- */
+input[type="search"] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+}
+
+/* --- Color picker --- */
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 2px solid var(--rmrp-control-border);
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 2px;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="color"]::-moz-color-swatch {
+    border: none;
+    border-radius: 5px;
+}
+
+/* --- Range (если появится) --- */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #2a2a33;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--rmrp-accent);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--rmrp-accent);
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+/* --- Тумблер (замена checkbox-флажка) --- */
+.switch-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.switch-toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    pointer-events: none;
+}
+
+.switch-track {
+    display: inline-flex;
+    align-items: center;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background: #252530;
+    border: 1px solid #3a3a46;
+    padding: 2px;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.switch-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #888;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.switch-toggle input:checked + .switch-track {
+    background: var(--rmrp-accent-soft);
+    border-color: var(--rmrp-accent);
+}
+
+.switch-toggle input:checked + .switch-track .switch-thumb {
+    transform: translateX(20px);
+    background: var(--rmrp-accent);
+    box-shadow: 0 0 10px rgba(230, 57, 57, 0.45);
+}
+
+.switch-toggle input:focus-visible + .switch-track {
+    box-shadow: 0 0 0 3px var(--rmrp-accent-soft);
+}
+
+/* Зелёный тумблер для биндера */
+.switch-toggle.switch-success input:checked + .switch-track {
+    background: rgba(46, 196, 182, 0.2);
+    border-color: var(--rmrp-success);
+}
+
+.switch-toggle.switch-success input:checked + .switch-track .switch-thumb {
+    background: var(--rmrp-success);
+    box-shadow: 0 0 8px rgba(46, 196, 182, 0.5);
+}
